@@ -33,6 +33,15 @@
       user-select: none;
     }
 
+    /* Arka plan kayan yıldızlar katmanı (çiçeklerin arkasında) */
+    #sky-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Yukarıdan süzülen parıltılar (çiçeklerin önünü kapatmayacak şekilde düşük/yumuşak katman) */
     #sparkle-canvas {
       position: fixed;
       inset: 0;
@@ -59,10 +68,11 @@
       left: 0;
       right: 0;
       z-index: 10;
-      padding: max(16px, env(safe-area-inset-top)) 20px 12px;
+      padding: max(16px, env(safe-area-inset-top)) 16px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
       pointer-events: none;
     }
 
@@ -70,8 +80,8 @@
       pointer-events: auto;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 8px 16px;
+      gap: 9px;
+      padding: 8px 14px;
       border-radius: 999px;
       background: var(--glass);
       backdrop-filter: blur(14px);
@@ -86,11 +96,12 @@
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #fff0a8, #ff79c6);
       box-shadow: 0 0 12px rgba(255, 165, 224, 0.85);
+      flex-shrink: 0;
     }
 
     .brand-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-style: italic;
       font-weight: 600;
       letter-spacing: 0.02em;
@@ -101,8 +112,8 @@
       pointer-events: auto;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 8px 14px;
+      gap: 6px;
+      padding: 8px 13px;
       border-radius: 999px;
       border: 1px solid var(--glass-border);
       background: var(--glass);
@@ -110,7 +121,7 @@
       -webkit-backdrop-filter: blur(14px);
       color: var(--ink);
       font-family: inherit;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 500;
       cursor: pointer;
       box-shadow: var(--shadow-soft);
@@ -122,17 +133,13 @@
       transform: translateY(-1px);
     }
 
-    .icon-btn:active {
-      transform: scale(0.97);
-    }
-
     .bottombar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       z-index: 10;
-      padding: 12px 18px max(18px, env(safe-area-inset-bottom));
+      padding: 12px 14px max(18px, env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -143,22 +150,43 @@
     .hint-chip {
       padding: 6px 14px;
       border-radius: 999px;
-      background: rgba(20, 8, 38, 0.68);
+      background: rgba(20, 8, 38, 0.72);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 220, 248, 0.16);
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: var(--ink-soft);
-      letter-spacing: 0.01em;
       text-align: center;
       transition: opacity 0.5s ease;
+    }
+
+    .fs-toast {
+      position: fixed;
+      top: max(68px, calc(env(safe-area-inset-top) + 54px));
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      z-index: 20;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(28, 12, 50, 0.84);
+      border: 1px solid rgba(255, 214, 246, 0.28);
+      font-size: 0.75rem;
+      color: #ffeaf9;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .fs-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .actions-row {
       pointer-events: auto;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -166,35 +194,24 @@
     .primary-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 11px 20px;
+      gap: 7px;
+      padding: 10px 18px;
       border-radius: 999px;
       border: none;
       background: linear-gradient(135deg, #ff85c8 0%, #c89bff 100%);
       color: #18072b;
       font-family: inherit;
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      letter-spacing: 0.01em;
       cursor: pointer;
       box-shadow: 0 12px 28px rgba(255, 133, 200, 0.34);
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
-    }
-
-    .primary-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 34px rgba(255, 133, 200, 0.45);
-    }
-
-    .primary-btn:active {
-      transform: scale(0.97);
     }
 
     .secondary-btn {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 11px 16px;
+      gap: 6px;
+      padding: 10px 14px;
       border-radius: 999px;
       border: 1px solid var(--glass-border);
       background: var(--glass);
@@ -202,20 +219,10 @@
       -webkit-backdrop-filter: blur(14px);
       color: var(--ink);
       font-family: inherit;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 500;
       cursor: pointer;
       box-shadow: var(--shadow-soft);
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .secondary-btn:hover {
-      background: rgba(54, 24, 92, 0.78);
-      transform: translateY(-1px);
-    }
-
-    .secondary-btn:active {
-      transform: scale(0.97);
     }
 
     .modal-backdrop {
@@ -275,12 +282,6 @@
       cursor: pointer;
       display: grid;
       place-items: center;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .card-close:hover {
-      background: rgba(255, 255, 255, 0.18);
-      transform: rotate(90deg);
     }
 
     .card-kicker {
@@ -331,7 +332,6 @@
       justify-content: space-between;
       font-size: 0.72rem;
       color: rgba(248, 242, 234, 0.58);
-      letter-spacing: 0.04em;
     }
 
     #loader {
@@ -371,13 +371,6 @@
       font-size: 1.2rem;
       color: #ffe9fa;
     }
-
-    @media (max-width: 640px) {
-      .brand-title { font-size: 1.02rem; }
-      .love-card { padding: 24px 20px 20px; }
-      .card-poem { font-size: 1.24rem; }
-      .card-to { font-size: 1.38rem; }
-    }
   </style>
 </head>
 <body>
@@ -386,6 +379,7 @@
     <div class="loader-text">Işıltılı kasımpatılar açılıyor...</div>
   </div>
 
+  <canvas id="sky-canvas"></canvas>
   <div id="canvas-wrap"></div>
   <canvas id="sparkle-canvas"></canvas>
 
@@ -400,8 +394,10 @@
     </button>
   </header>
 
+  <div class="fs-toast" id="fsToast">Tam ekran modu</div>
+
   <main class="bottombar">
-    <div class="hint-chip" id="hintChip">Sürükle · Çiçeklere dokun · Yan kasımpatılara tıklayınca yeniden açılır ve rengi değişir</div>
+    <div class="hint-chip" id="hintChip">Çift dokun: Tam ekran · Sürükle · Çiçeklere dokun · Yan kasımpatılara tıklayınca yeniden açılır ve rengi değişir</div>
     <div class="actions-row">
       <button class="primary-btn" id="openCardBtn" type="button">
         <span>✉</span>
@@ -457,9 +453,18 @@
       0.1,
       100
     );
-    const defaultCamPos = new THREE.Vector3(0, 1.05, 7.8);
+
     const defaultTarget = new THREE.Vector3(0, 0.25, 0);
-    camera.position.copy(defaultCamPos);
+    let defaultCamPos = new THREE.Vector3(0, 1.05, 7.8);
+
+    function fitCameraToViewport() {
+      const aspect = window.innerWidth / window.innerHeight;
+      const dist = aspect < 0.75 ? 11.4 : aspect < 1.1 ? 9.4 : 7.8;
+      defaultCamPos = new THREE.Vector3(0, 1.05, dist);
+      camera.position.copy(defaultCamPos);
+      controls.target.copy(defaultTarget);
+      controls.update();
+    }
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -499,12 +504,11 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.065;
     controls.minDistance = 4.0;
-    controls.maxDistance = 13.0;
+    controls.maxDistance = 15.0;
     controls.maxPolarAngle = Math.PI * 0.62;
     controls.minPolarAngle = Math.PI * 0.14;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.42;
-    controls.update();
 
     let userInteractedAt = 0;
     controls.addEventListener('start', () => {
@@ -1171,7 +1175,6 @@
       bouquetGroup.add(cardGroup);
     }
 
-    // --- Yanlardaki İki 3D Kasımpatı (Her Açıdan Dolgun Taç Yapraklı) ---
     const sidePalettes = [
       { outer: '#ff8ad4', mid: '#ffb8e8', inner: '#ffd485', core: '#ffeb78', glow: '#ff9ce6', emissive: '#5e1449' },
       { outer: '#ff7096', mid: '#ffadc4', inner: '#ffd680', core: '#fff28c', glow: '#ff85a8', emissive: '#5c1128' },
@@ -1179,7 +1182,6 @@
       { outer: '#ffa170', mid: '#ffc7a3', inner: '#fff0a8', core: '#ffffff', glow: '#ffb380', emissive: '#5c2408' }
     ];
 
-    // Her yöne kavisli, ucu ince ve dolgun 3D taç yaprak geometrisi
     function createCurvedPetalGeo(width, length, curveAmp) {
       const geo = new THREE.BoxGeometry(width, length, 0.022, 3, 7, 1);
       geo.translate(0, length * 0.5, 0);
@@ -1189,11 +1191,8 @@
         const y = pos.getY(i);
         const z = pos.getZ(i);
         const t = Math.max(0, Math.min(1, y / length));
-        // Yaprak ortada geniş, uçta sivri-oval
         const widthProfile = Math.sin(Math.pow(t, 0.72) * Math.PI * 0.88 + 0.18) * 0.92 + 0.14;
-        // Çanak/taç kavisi
         const archZ = Math.sin(t * Math.PI * 0.78) * curveAmp - Math.pow(t, 2.2) * (curveAmp * 0.55);
-        // Kalınlık uca doğru incelir
         const thickProfile = (1 - t * 0.72);
         pos.setX(i, x * widthProfile);
         pos.setY(i, y);
@@ -1204,9 +1203,11 @@
     }
 
     function buildSideBlooms() {
+      const isPortrait = window.innerWidth < window.innerHeight;
+      const sideX = isPortrait ? 1.65 : 2.55;
       const configs = [
-        { x: -2.55, baseY: -1.45, stemLen: 2.0, paletteIdx: 0, lean: 0.07 },
-        { x: 2.55, baseY: -1.45, stemLen: 2.0, paletteIdx: 1, lean: -0.07 }
+        { x: -sideX, baseY: -1.45, stemLen: 1.95, paletteIdx: 0, lean: 0.07 },
+        { x: sideX, baseY: -1.45, stemLen: 1.95, paletteIdx: 1, lean: -0.07 }
       ];
 
       configs.forEach((cfg, idx) => {
@@ -1228,7 +1229,6 @@
         stemMesh.castShadow = true;
         stemPivot.add(stemMesh);
 
-        // 3D kıvrımlı gövde yaprakları
         const stemLeafMat = new THREE.MeshStandardMaterial({
           color: '#57cc66',
           emissive: '#133d18',
@@ -1252,7 +1252,6 @@
         rightLeafPivot.add(rightLeaf);
         stemPivot.add(rightLeafPivot);
 
-        // Çiçek başı grubu (sap ucunda, kameraya ve 3D uzaya dönük tam çiçek)
         const headGroup = new THREE.Group();
         stemPivot.add(headGroup);
 
@@ -1269,7 +1268,6 @@
         haloSprite.position.set(0, 0.08, -0.15);
         headGroup.add(haloSprite);
 
-        // Çiçek göbeği (alt-orta destek)
         const receptacleMat = new THREE.MeshStandardMaterial({
           color: '#7ab82e',
           roughness: 0.55
@@ -1281,7 +1279,6 @@
         receptacle.scale.set(1.1, 0.72, 1.1);
         headGroup.add(receptacle);
 
-        // 3 katman dolgun 3D taç yaprak (küresel/çanak dağılımlı)
         const ringDefs = [
           { layerKey: 'outer', count: 24, len: 0.56, wid: 0.145, curve: 0.16, tilt: 1.18, yOff: 0.02, mat: new THREE.MeshStandardMaterial({ roughness: 0.34, metalness: 0.05, side: THREE.DoubleSide }) },
           { layerKey: 'mid', count: 20, len: 0.45, wid: 0.13, curve: 0.13, tilt: 0.82, yOff: 0.08, mat: new THREE.MeshStandardMaterial({ roughness: 0.32, metalness: 0.05, side: THREE.DoubleSide }) },
@@ -1312,7 +1309,6 @@
           petalRings.push({ ringGroup, mat: rd.mat, layerKey: rd.layerKey });
         });
 
-        // Işıltılı altın-sarı polen çekirdeği
         const coreMat = new THREE.MeshStandardMaterial({
           color: '#fff08a',
           emissive: '#ffbe2e',
@@ -1356,6 +1352,13 @@
         rootGroup.add(group);
         sideBlooms.push(bloomObj);
       });
+    }
+
+    function updateSidePositions() {
+      const isPortrait = window.innerWidth < window.innerHeight;
+      const sideX = isPortrait ? 1.65 : 2.55;
+      if (sideBlooms[0]) sideBlooms[0].group.position.x = -sideX;
+      if (sideBlooms[1]) sideBlooms[1].group.position.x = sideX;
     }
 
     function applySidePalette(bloom) {
@@ -1434,47 +1437,128 @@
       }
     }
 
+    /* Arka plan kayan yıldızlar */
+    const skyCanvas = document.getElementById('sky-canvas');
+    const skyCtx = skyCanvas.getContext('2d');
+    let skyW = 0, skyH = 0, skyDpr = 1;
+    const shootingStars = [];
+    let nextStarAt = 0.6;
+
+    function spawnShootingStar() {
+      const startX = Math.random() * skyW * 0.88 + skyW * 0.06;
+      const startY = Math.random() * skyH * 0.42;
+      const angle = Math.PI * 0.22 + (Math.random() - 0.5) * 0.16;
+      const speed = 340 + Math.random() * 220;
+      shootingStars.push({
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        len: 52 + Math.random() * 44,
+        life: 1.0,
+        decay: 1.05 + Math.random() * 0.45,
+        tint: Math.random() > 0.4 ? '255, 244, 214' : '255, 194, 238'
+      });
+    }
+
+    function updateAndDrawShootingStars(dt, elapsed) {
+      skyCtx.clearRect(0, 0, skyW, skyH);
+
+      if (elapsed >= nextStarAt && shootingStars.length < 3) {
+        spawnShootingStar();
+        nextStarAt = elapsed + 1.8 + Math.random() * 2.4;
+      }
+
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const s = shootingStars[i];
+        s.x += s.vx * dt;
+        s.y += s.vy * dt;
+        s.life -= s.decay * dt;
+
+        if (s.life <= 0 || s.x > skyW + 120 || s.y > skyH + 120) {
+          shootingStars.splice(i, 1);
+          continue;
+        }
+
+        const mag = Math.hypot(s.vx, s.vy) || 1;
+        const tailX = s.x - (s.vx / mag) * s.len;
+        const tailY = s.y - (s.vy / mag) * s.len;
+        const alpha = Math.max(0, s.life * 0.52);
+
+        const grad = skyCtx.createLinearGradient(tailX, tailY, s.x, s.y);
+        grad.addColorStop(0, `rgba(${s.tint}, 0)`);
+        grad.addColorStop(1, `rgba(${s.tint}, ${alpha.toFixed(3)})`);
+
+        skyCtx.strokeStyle = grad;
+        skyCtx.lineWidth = 1.6;
+        skyCtx.lineCap = 'round';
+        skyCtx.beginPath();
+        skyCtx.moveTo(tailX, tailY);
+        skyCtx.lineTo(s.x, s.y);
+        skyCtx.stroke();
+
+        skyCtx.fillStyle = `rgba(${s.tint}, ${(alpha * 1.15).toFixed(3)})`;
+        skyCtx.beginPath();
+        skyCtx.arc(s.x, s.y, 1.8, 0, Math.PI * 2);
+        skyCtx.fill();
+      }
+    }
+
+    /* Yukarıdan aşağıya süzülen parıltılar (çiçekleri kapatmayacak şekilde ince ve saydam) */
     const sparkleCanvas = document.getElementById('sparkle-canvas');
     const sctx = sparkleCanvas.getContext('2d');
     let sw = 0, sh = 0, sdpr = 1;
-    let ambientStars = [];
+    let fallingGlints = [];
 
-    function resizeSparkles() {
+    function resizeCanvases() {
       sdpr = Math.min(window.devicePixelRatio || 1, 2);
       sw = window.innerWidth;
       sh = window.innerHeight;
+
+      skyDpr = sdpr;
+      skyW = sw;
+      skyH = sh;
+      skyCanvas.width = Math.floor(skyW * skyDpr);
+      skyCanvas.height = Math.floor(skyH * skyDpr);
+      skyCtx.setTransform(skyDpr, 0, 0, skyDpr, 0, 0);
+
       sparkleCanvas.width = Math.floor(sw * sdpr);
       sparkleCanvas.height = Math.floor(sh * sdpr);
       sctx.setTransform(sdpr, 0, 0, sdpr, 0, 0);
 
-      ambientStars = Array.from({ length: 56 }, () => ({
+      fallingGlints = Array.from({ length: 34 }, () => ({
         x: Math.random() * sw,
         y: Math.random() * sh,
-        r: 0.9 + Math.random() * 2.2,
-        vy: -(0.12 + Math.random() * 0.28),
+        r: 0.75 + Math.random() * 1.45,
+        vy: 0.32 + Math.random() * 0.52,
+        swayAmp: 0.25 + Math.random() * 0.55,
+        swayFreq: 0.015 + Math.random() * 0.02,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.02 + Math.random() * 0.03,
-        hue: Math.random() > 0.45 ? '255, 240, 200' : '255, 175, 235'
+        hue: Math.random() > 0.45 ? '255, 238, 196' : '255, 182, 236'
       }));
     }
 
-    function drawAmbientSparkles() {
+    function drawFallingGlints() {
       sctx.clearRect(0, 0, sw, sh);
-      for (const st of ambientStars) {
-        st.phase += st.speed;
-        st.y += st.vy;
-        if (st.y < -12) {
-          st.y = sh + 12;
-          st.x = Math.random() * sw;
-        }
-        const alpha = 0.25 + (Math.sin(st.phase) * 0.5 + 0.5) * 0.7;
+      for (const g of fallingGlints) {
+        g.phase += g.swayFreq;
+        g.y += g.vy;
+        g.x += Math.sin(g.phase) * g.swayAmp;
 
-        const g = sctx.createRadialGradient(st.x, st.y, 0.2, st.x, st.y, st.r * 3.2);
-        g.addColorStop(0, `rgba(${st.hue}, ${alpha.toFixed(2)})`);
-        g.addColorStop(1, `rgba(${st.hue}, 0)`);
-        sctx.fillStyle = g;
+        if (g.y > sh + 14) {
+          g.y = -14;
+          g.x = Math.random() * sw;
+        }
+        if (g.x < -14) g.x = sw + 14;
+        if (g.x > sw + 14) g.x = -14;
+
+        const pulse = 0.14 + (Math.sin(g.phase * 1.6) * 0.5 + 0.5) * 0.26;
+        const radGrad = sctx.createRadialGradient(g.x, g.y, 0.2, g.x, g.y, g.r * 3.0);
+        radGrad.addColorStop(0, `rgba(${g.hue}, ${pulse.toFixed(3)})`);
+        radGrad.addColorStop(1, `rgba(${g.hue}, 0)`);
+        sctx.fillStyle = radGrad;
         sctx.beginPath();
-        sctx.arc(st.x, st.y, st.r * 3.2, 0, Math.PI * 2);
+        sctx.arc(g.x, g.y, g.r * 3.0, 0, Math.PI * 2);
         sctx.fill();
       }
     }
@@ -1485,7 +1569,61 @@
     populateFlowers();
     buildMiniCard();
     buildSideBlooms();
-    resizeSparkles();
+    fitCameraToViewport();
+    resizeCanvases();
+
+    /* Çift basma / çift dokunma ile tam ekran geçişi */
+    const fsToast = document.getElementById('fsToast');
+    let toastTimer = null;
+
+    function showToast(text) {
+      fsToast.textContent = text;
+      fsToast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => fsToast.classList.remove('show'), 1800);
+    }
+
+    function isFullscreenActive() {
+      return Boolean(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
+      );
+    }
+
+    async function toggleFullscreen() {
+      try {
+        if (!isFullscreenActive()) {
+          const el = document.documentElement;
+          if (el.requestFullscreen) {
+            await el.requestFullscreen();
+          } else if (el.webkitRequestFullscreen) {
+            await el.webkitRequestFullscreen();
+          } else if (el.msRequestFullscreen) {
+            await el.msRequestFullscreen();
+          }
+          showToast('Tam ekran açıldı');
+        } else {
+          if (document.exitFullscreen) {
+            await document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            await document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) {
+            await document.msExitFullscreen();
+          }
+          showToast('Tam ekrandan çıkıldı');
+        }
+      } catch (_) {
+        showToast('Tam ekran bu tarayıcıda kısıtlı olabilir');
+      }
+    }
+
+    let lastTapTime = 0;
+
+    document.addEventListener('dblclick', (e) => {
+      if (e.target.closest('button, .love-card')) return;
+      toggleFullscreen();
+    });
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
@@ -1505,8 +1643,19 @@
 
       raycaster.setFromCamera(pointer, camera);
       const hits = raycaster.intersectObjects(interactiveMeshes, false);
-      if (!hits.length) return;
 
+      if (!hits.length) {
+        const now = performance.now();
+        if (now - lastTapTime < 320) {
+          lastTapTime = 0;
+          toggleFullscreen();
+        } else {
+          lastTapTime = now;
+        }
+        return;
+      }
+
+      lastTapTime = 0;
       const hit = hits[0];
       const kind = hit.object.userData?.kind;
 
@@ -1566,8 +1715,8 @@
 
     let cameraResetting = false;
     resetCamBtn.addEventListener('click', () => {
+      fitCameraToViewport();
       cameraResetting = true;
-      controls.target.copy(defaultTarget);
     });
 
     burstBtn.addEventListener('click', () => {
@@ -1585,13 +1734,19 @@
       hintChip.style.opacity = '0.45';
     }, 7000);
 
-    window.addEventListener('resize', () => {
+    function handleViewportResize() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      resizeSparkles();
-    });
+      updateSidePositions();
+      fitCameraToViewport();
+      resizeCanvases();
+    }
+
+    window.addEventListener('resize', handleViewportResize);
+    document.addEventListener('fullscreenchange', handleViewportResize);
+    document.addEventListener('webkitfullscreenchange', handleViewportResize);
 
     const clock = new THREE.Clock();
     let frameCount = 0;
@@ -1658,7 +1813,6 @@
 
         const bloomRaw = Math.max(0, (b.progress - 0.25) / 0.75);
         b.headGroup.position.set(0, curStemH + 0.04, 0.04);
-        // Çiçek başı kameraya hafif eğimli dursun ki taç yaprak halkaları net görünsün
         b.headGroup.rotation.x = 0.48 + Math.sin(elapsed * 1.6 + b.phase) * 0.04;
         b.headGroup.rotation.y = Math.sin(elapsed * 1.1 + b.phase) * 0.12;
 
@@ -1696,7 +1850,8 @@
         p.mesh.scale.setScalar(0.6 + p.life * 0.65);
       }
 
-      drawAmbientSparkles();
+      updateAndDrawShootingStars(dt, elapsed);
+      drawFallingGlints();
       controls.update();
       renderer.render(scene, camera);
     }
